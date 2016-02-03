@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">生活态</string>
+
+    <string name="toolbar_title_login">用户登录</string>
+    <string name="toolbar_title_register">用户注册</string>
+
+    <string name="button_sign_in">登    录</string>
+    <string name="textView_no_account"><Data><![CDATA[没有账号?去<font color="#ff7f46"><b>注册</b></font>]]></Data></string>
+    <string name="textView_other_account_login">或使用以下账号登录</string>
+    <string name="editText_login_name_hint">请输入手机账号</string>
+    <string name="editText_register_name_hint">请设置手机账号</string>
+    <string name="editText_login_password_hint">请输入密码</string>
+    <string name="editText_register_password_hint">请设置密码</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="button_register_in">注    册</string>
+    <string name="policy_text">已阅读并同意相关条款和隐私政策</string>
+
+    <string name="drawer_layout_open">打开</string>
+    <string name="drawer_layout_close">关闭</string>
+    
+    <string name="text_view_no_login">未登录</string>
+
+    <string name="drawer_layout_tab_home">首页</string>
+
+</resources>

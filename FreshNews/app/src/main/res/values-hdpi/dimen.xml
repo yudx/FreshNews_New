@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="toolbar_height">37dp</dimen>
+    <dimen name="editText_corner">2dp</dimen>
+    <dimen name="editText_height">35dp</dimen>
+    <dimen name="edit_layout_padding">30dp</dimen>
+    <dimen name="button_login_height">35dp</dimen>
+    <dimen name="image_logo_height">35dp</dimen>
+    <dimen name="textView_no_account_padding">8dp</dimen>
+    <dimen name="editText_padding">15dp</dimen>
+    <dimen name="editText_size">13sp</dimen>
+    <dimen name="button_login_size">15sp</dimen>
+
+    <dimen name="drawer_layout_width">180dp</dimen>
+    <dimen name="drawer_head_padding">27.33dp</dimen>
+
+    <dimen name="user_name_size">17.33sp</dimen>
+
+</resources>
