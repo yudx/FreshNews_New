@@ -1,0 +1,138 @@
+package com.tay.freshnews;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.tay.freshnews.fragment.ContactFragment;
+import com.tay.freshnews.fragment.HomeFragment;
+import com.tay.freshnews.fragment.SearchFragment;
+import com.tay.freshnews.fragment.SettingFragment;
+
+public class HomeActivity extends ActionBarActivity implements View.OnClickListener {
+
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private Toolbar mToolBar;
+
+    private ImageView mUserLogo;
+    private TextView mUserName;
+    private NavigationView mNavigationView;
+
+    private Fragment mHome;
+    private Fragment mSearch;
+    private Fragment mContact;
+    private Fragment mSetting;
+
+    private Intent intent;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        findView();
+        initView();
+
+    }
+
+    private void findView() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mUserLogo = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.user_logo);
+        mUserName = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.user_name);
+    }
+
+    private void initView() {
+        intent = new Intent();
+        mToolBar.setTitle(getString(R.string.drawer_layout_tab_home));
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,mToolBar,R.string.drawer_layout_open,R.string.drawer_layout_close);
+        mDrawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mUserLogo.setOnClickListener(this);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                selNavigationItem(item);
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+        });
+
+        mHome = new HomeFragment(this);
+        replaceFragment(mHome,"home");
+
+    }
+
+
+    private void selNavigationItem(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_home:
+                mToolBar.setTitle(getString(R.string.drawer_layout_tab_home));
+                if (mHome == null) {
+                    mHome = new HomeFragment(this);
+                }
+                replaceFragment(mHome,"home");
+                break;
+            case R.id.item_search:
+                mToolBar.setTitle(getString(R.string.drawer_layout_tab_search));
+                if (mSearch == null) {
+                    mSearch = new SearchFragment(this);
+                }
+                replaceFragment(mSearch,"search");
+                break;
+            case R.id.item_contact:
+                mToolBar.setTitle(getString(R.string.drawer_layout_tab_contact));
+                if (mContact == null) {
+                    mContact = new ContactFragment(this);
+                }
+                replaceFragment(mContact,"contact");
+                break;
+            case R.id.item_setting:
+                mToolBar.setTitle(getString(R.string.drawer_layout_tab_setting));
+                if (mSetting == null) {
+                    mSetting = new SettingFragment(this);
+                }
+                replaceFragment(mSetting,"setting");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void replaceFragment(Fragment fragment,String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame,fragment,tag);
+        fragmentTransaction.commit();
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.user_logo:
+                intent.setClass(this,LoginActivity.class);
+                startActivity(intent);
+                break;
+            default:
+
+                break;
+        }
+    }
+}

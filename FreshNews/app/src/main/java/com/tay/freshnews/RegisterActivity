@@ -1,0 +1,38 @@
+package com.tay.freshnews;
+
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+public class RegisterActivity extends ActionBarActivity {
+
+    private Toolbar mToolBar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        findView();
+        initView();
+    }
+
+    private void findView() {
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        mToolBar.setTitle(getResources().getString(R.string.toolbar_title_register));
+        setSupportActionBar(mToolBar);
+    }
+
+    private void initView() {
+        /** 设置toolbar **/
+        mToolBar.setNavigationIcon(R.mipmap.icon_back);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterActivity.this.finish();
+            }
+        });
+    }
+
+}

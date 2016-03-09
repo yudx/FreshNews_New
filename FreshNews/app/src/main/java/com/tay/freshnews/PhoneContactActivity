@@ -1,0 +1,208 @@
+package com.tay.freshnews;
+
+import android.database.Cursor;
+import android.os.Bundle;
+import android.app.Activity;
+import android.provider.ContactsContract;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AlphabetIndexer;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.tay.freshnews.View.SideBar;
+import com.tay.freshnews.adapter.PhoneContactAdapter;
+import com.tay.freshnews.pojo.Contact;
+
+import java.util.ArrayList;
+
+public class PhoneContactActivity extends Activity implements SideBar.OnTouchingLetterChangedListener{
+
+    private Toolbar mContactTool;
+    private ArrayList<Contact> contacts;
+    private ListView mContactList;
+
+    private String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
+    private AlphabetIndexer indexer;
+
+    private PhoneContactAdapter adapter;
+
+    private LinearLayout titleLayout;
+    private TextView title;
+    private TextView textDialog;
+
+    /**
+     * 上次第一个可见元素，用于滚动时记录标识。
+     */
+    private int lastFirstVisibleItem = -1;
+
+    private SideBar mSideBar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_phone_contact);
+
+        findView();
+        initView();
+
+        readAllContacts();
+
+    }
+
+    private void findView() {
+        mContactTool = (Toolbar) findViewById(R.id.contact_toolbar);
+        mContactList = (ListView) findViewById(R.id.contact_list);
+        titleLayout = (LinearLayout) findViewById(R.id.title_layout);
+        title = (TextView) findViewById(R.id.title);
+        mSideBar = (SideBar) findViewById(R.id.sideBar);
+        textDialog = (TextView) findViewById(R.id.text_dialog);
+    }
+
+    private void initView() {
+        mContactTool.setTitle(R.string.toolbar_title_phone_contact);
+        mContactTool.setNavigationIcon(R.mipmap.icon_back);
+        mContactTool.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhoneContactActivity.this.finish();
+            }
+        });
+        mSideBar.setOnTouchingLetterChangedListener(this);
+        mSideBar.setTextView(textDialog);
+    }
+
+    /*
+     * 读取联系人的信息
+     */
+    public void readAllContacts() {
+        if(contacts == null) {
+            contacts = new ArrayList<>();
+        }
+        Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
+                new String[]{ContactsContract.Contacts._ID,
+                             ContactsContract.Contacts.DISPLAY_NAME,
+                             ContactsContract.Contacts.SORT_KEY_PRIMARY},
+                null,null,ContactsContract.Contacts.SORT_KEY_PRIMARY);
+        if (cursor == null) {
+            return;
+        }
+        while(cursor.moveToNext()) {
+            Contact contact = new Contact();
+            String contactId = cursor.getString(0);
+            String name = cursor.getString(1);
+            String sortKey = getSortKey(cursor.getString(2));
+            contact.setId(contactId);
+            contact.setName(name);
+            contact.setSortKey(sortKey);
+            Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + contactId,
+                    null, null);
+            int phoneIndex = 0;
+            if (phones != null) {
+                if(phones.getCount() > 0) {
+                    phoneIndex = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                }
+                while(phones.moveToNext()) {
+                    String phoneNumber = phones.getString(phoneIndex);
+                    contact.addPhone(phoneNumber);
+                }
+                phones.close();
+            }
+            Cursor emails = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                    null,
+                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=" + contactId,
+                    null, null);
+            int emailIndex = 0;
+            if (emails != null) {
+                if(emails.getCount() > 0) {
+                    emailIndex = emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+                }
+                while(emails.moveToNext()) {
+                    String email = emails.getString(emailIndex);
+                    contact.addEmail(email);
+                }
+                emails.close();
+            }
+            contacts.add(contact);
+        }
+        startManagingCursor(cursor);
+        indexer = new AlphabetIndexer(cursor,2,alphabet);
+        adapter = new PhoneContactAdapter(this, R.layout.contact_item, contacts);
+        adapter.setIndexer(indexer);
+        if (contacts.size() > 0) {
+            setupContactsListView();
+        }
+    }
+
+    private String getSortKey(String sortKeyString) {
+        String key = sortKeyString.substring(0, 1).toUpperCase();
+        if (key.matches("[A-Z]")) {
+            return key;
+        }
+        return "#";
+    }
+
+
+    /**
+     * 为联系人ListView设置监听事件，根据当前的滑动状态来改变分组的显示位置，从而实现挤压动画的效果。
+     */
+    private void setupContactsListView() {
+        mContactList.setAdapter(adapter);
+        mContactList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                                 int totalItemCount) {
+                int section = indexer.getSectionForPosition(firstVisibleItem);
+                int nextSecPosition = indexer.getPositionForSection(section + 1);
+                if (firstVisibleItem != lastFirstVisibleItem) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) titleLayout.getLayoutParams();
+                    params.topMargin = 0;
+                    titleLayout.setLayoutParams(params);
+                    title.setText(String.valueOf(alphabet.charAt(section)));
+                }
+                if (nextSecPosition == firstVisibleItem + 1) {
+                    View childView = view.getChildAt(0);
+                    if (childView != null) {
+                        int titleHeight = titleLayout.getHeight();
+                        int bottom = childView.getBottom();
+                        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) titleLayout
+                                .getLayoutParams();
+                        if (bottom < titleHeight) {
+                            float pushedDistance = bottom - titleHeight;
+                            params.topMargin = (int) pushedDistance;
+                            titleLayout.setLayoutParams(params);
+                        } else {
+                            if (params.topMargin != 0) {
+                                params.topMargin = 0;
+                                titleLayout.setLayoutParams(params);
+                            }
+                        }
+                    }
+                }
+                lastFirstVisibleItem = firstVisibleItem;
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onTouchingLetterChanged(String s) {
+
+    }
+
+    @Override
+    public void onTouchingLetterSelectedPosition(int position) {
+        int sectionPosition = indexer.getPositionForSection(position);
+        mContactList.setSelection(sectionPosition);
+    }
+}

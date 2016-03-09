@@ -17,4 +17,7 @@
 
     <dimen name="user_name_size">17.33sp</dimen>
 
+    <dimen name="contact_search_edittext_height">36dp</dimen>
+    <dimen name="contact_add_icon_size">21dp</dimen>
+
 </resources>

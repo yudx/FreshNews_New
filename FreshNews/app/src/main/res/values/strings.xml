@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">生活态</string>
+    <string name="app_name">自定义View练习</string>
 
     <string name="toolbar_title_login">用户登录</string>
     <string name="toolbar_title_register">用户注册</string>
+    <string name="toolbar_title_account">个人中心</string>
 
     <string name="button_sign_in">登    录</string>
     <string name="textView_no_account"><Data><![CDATA[没有账号?去<font color="#ff7f46"><b>注册</b></font>]]></Data></string>
@@ -18,9 +19,14 @@
 
     <string name="drawer_layout_open">打开</string>
     <string name="drawer_layout_close">关闭</string>
-    
+
     <string name="text_view_no_login">未登录</string>
 
     <string name="drawer_layout_tab_home">首页</string>
+    <string name="drawer_layout_tab_search">搜索</string>
+    <string name="drawer_layout_tab_contact">好友</string>
+    <string name="drawer_layout_tab_setting">设置</string>
+    <string name="title_activity_phone_contact">PhoneContactActivity</string>
+    <string name="toolbar_title_phone_contact">手机联系人</string>
 
 </resources>

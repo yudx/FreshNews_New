@@ -3,19 +3,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/item_one"
+            android:id="@+id/item_home"
             android:icon="@mipmap/icon_mima"
-            android:title="我的动态"></item>
+            android:title="@string/drawer_layout_tab_home"></item>
 
         <item
-            android:id="@+id/item_two"
+            android:id="@+id/item_search"
             android:icon="@mipmap/icon_mima"
-            android:title="我的留言"></item>
+            android:title="@string/drawer_layout_tab_search"></item>
 
         <item
-            android:id="@+id/item_three"
+            android:id="@+id/item_contact"
             android:icon="@mipmap/icon_mima"
-            android:title="附近的人"></item>
+            android:title="@string/drawer_layout_tab_contact"></item>
+
+        <item
+            android:id="@+id/item_setting"
+            android:icon="@mipmap/icon_mima"
+            android:title="@string/drawer_layout_tab_setting"></item>
     </group>
 
 </menu>

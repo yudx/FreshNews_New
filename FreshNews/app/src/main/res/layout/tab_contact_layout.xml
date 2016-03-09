@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    
+    <RelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/contact_search_edittext_height"
+        android:background="@color/layout_search_color">
+
+        <ImageView
+            android:id="@+id/add_contact"
+            android:layout_width="@dimen/contact_add_icon_size"
+            android:layout_height="@dimen/contact_add_icon_size"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/five_dp"
+            android:src="@mipmap/add_contact"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/contact_search_edittext_height"
+            android:layout_toLeftOf="@id/add_contact"
+            android:background="@drawable/edit_text_normal"
+            android:paddingRight="@dimen/five_dp"
+            android:paddingLeft="@dimen/five_dp"
+            android:layout_margin="@dimen/five_dp"
+            android:textColor="@color/edit_text_normal_color"
+            android:textSize="@dimen/user_name_size"/>
+
+    </RelativeLayout>
+
+    <com.tay.freshnews.View.SideBar
+        android:layout_width="25dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/search_layout"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_layout"></ListView>
+
+</RelativeLayout>

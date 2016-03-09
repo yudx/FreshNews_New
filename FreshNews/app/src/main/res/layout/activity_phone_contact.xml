@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tay.freshnews.PhoneContactActivity">
+
+    <include
+        android:id="@+id/contact_toolbar"
+        layout="@layout/toolbar"/>
+
+    <ListView
+        android:id="@+id/contact_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_layout"
+        android:layout_marginRight="25dp"
+        android:divider="@null"
+        android:scrollbars="none"
+        android:overScrollMode="never" />
+
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        android:layout_marginRight="25dp"
+        android:layout_below="@+id/search_layout"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dip"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/contact_search_edittext_height"
+        android:background="@color/layout_search_color"
+        android:layout_below="@id/contact_toolbar">
+
+        <EditText
+            android:id="@+id/search_cond"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/contact_search_edittext_height"
+            android:background="@drawable/edit_text_normal"
+            android:paddingRight="@dimen/five_dp"
+            android:paddingLeft="@dimen/five_dp"
+            android:layout_margin="@dimen/five_dp"
+            android:textColor="@color/edit_text_normal_color"
+            android:textSize="@dimen/user_name_size"/>
+
+    </RelativeLayout>
+
+    <com.tay.freshnews.View.SideBar
+        android:id="@+id/sideBar"
+        android:layout_width="25dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/search_layout"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_dialog"
+        android:textColor="#ff0000"
+        android:textSize="20dp"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
