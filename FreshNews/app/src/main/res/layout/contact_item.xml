@@ -7,8 +7,8 @@
     <LinearLayout
         android:id="@+id/sort_key_layout"
         android:layout_width="fill_parent"
-        android:layout_height="18dip"
-        android:background="@color/colorPrimary" >
+        android:layout_height="30dp"
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/sort_key"
@@ -16,17 +16,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="10dip"
+            android:gravity="center_vertical"
             android:textColor="#ffffff"
             android:textSize="13sp" />
-        
     </LinearLayout>
 
     <android.support.v7.widget.CardView
         android:id="@+id/name_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="#5d6dc4"
-        card_view:cardCornerRadius="10dp"
+        card_view:cardBackgroundColor="#f7968f"
         card_view:cardPreventCornerOverlap="true"
         card_view:cardUseCompatPadding="true"
         card_view:contentPadding="10dp">
@@ -66,6 +65,7 @@
                 android:text="13917323368"/>
 
             <TextView
+                android:id="@+id/contact_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/contact_icon"
@@ -74,8 +74,6 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:text="123@qq.com"/>
-
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
 </LinearLayout>

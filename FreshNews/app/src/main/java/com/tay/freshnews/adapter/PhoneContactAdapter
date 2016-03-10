@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.tay.freshnews.R;
 import com.tay.freshnews.pojo.Contact;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 public class PhoneContactAdapter extends ArrayAdapter<Contact> {
@@ -27,25 +29,46 @@ public class PhoneContactAdapter extends ArrayAdapter<Contact> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Contact contact = getItem(position);
-        LinearLayout layout = null;
+        ViewHolder mHolder = null;
         if (convertView == null) {
-            layout = (LinearLayout) LayoutInflater.from(getContext()).inflate(this.layout, null);
+            convertView = LayoutInflater.from(getContext()).inflate(this.layout, null);
+            mHolder = new ViewHolder();
+            mHolder.sortKeyLayout = (LinearLayout) convertView.findViewById(R.id.sort_key_layout);
+            mHolder.sortKey = (TextView) convertView.findViewById(R.id.sort_key);
+            mHolder.name = (TextView) convertView.findViewById(R.id.name);
+            mHolder.phone = (TextView) convertView.findViewById(R.id.contact_number);
+            mHolder.email = (TextView) convertView.findViewById(R.id.contact_email);
+            convertView.setTag(mHolder);
         } else {
-            layout = (LinearLayout) convertView;
+            mHolder = (ViewHolder)convertView.getTag();
         }
-        TextView name = (TextView) layout.findViewById(R.id.name);
-        LinearLayout sortKeyLayout = (LinearLayout) layout.findViewById(R.id.sort_key_layout);
-        TextView sortKey = (TextView) layout.findViewById(R.id.sort_key);
-        name.setText(contact.getName());
+        setViewData(mHolder,position);
+        return convertView;
+    }
+
+
+    private void setViewData(ViewHolder mHolder,int position) {
+        Contact contact = getItem(position);
+        mHolder.name.setText(contact.getName());
         int section = mIndexer.getSectionForPosition(position);
         if (position == mIndexer.getPositionForSection(section)) {
-            sortKey.setText(contact.getSortKey());
-            sortKeyLayout.setVisibility(View.VISIBLE);
+            mHolder.sortKey.setText(contact.getSortKey());
+            mHolder.sortKeyLayout.setVisibility(View.VISIBLE);
         } else {
-            sortKeyLayout.setVisibility(View.GONE);
+            mHolder.sortKeyLayout.setVisibility(View.GONE);
         }
-        return layout;
+        if (contact.getPhoneList() == null) {
+            mHolder.phone.setVisibility(View.GONE);
+        } else {
+            mHolder.phone.setVisibility(View.VISIBLE);
+            mHolder.phone.setText(StringUtils.join(contact.getPhoneList().iterator(), " / "));
+        }
+        if (contact.getEmailList() == null) {
+            mHolder.email.setVisibility(View.GONE);
+        } else {
+            mHolder.email.setVisibility(View.VISIBLE);
+            mHolder.email.setText(StringUtils.join(contact.getEmailList().iterator(), " / "));
+        }
     }
 
     /**
@@ -55,6 +78,14 @@ public class PhoneContactAdapter extends ArrayAdapter<Contact> {
      */
     public void setIndexer(SectionIndexer indexer) {
         mIndexer = indexer;
+    }
+
+    class ViewHolder {
+        LinearLayout sortKeyLayout;
+        TextView sortKey;
+        TextView name;
+        TextView phone;
+        TextView email;
     }
 
 }
